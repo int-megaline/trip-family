@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>후쿠오카 · 유후인 · 벳푸 가족여행</title>
+<meta name="description" content="2026.11.06~11.09 후쿠오카·유후인·벳푸 3박4일 가족여행 일정 및 예산 대시보드">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🗾</text></svg>">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="siteHeader"></div>
+
+<section class="hero-parallax" id="heroParallax" aria-label="후쿠오카 대표 이미지">
+  <div class="hero-parallax-bg" id="heroParallaxBg"></div>
+  <div class="hero-parallax-scrim"></div>
+  <div class="hero-parallax-inner">
+    <div class="hero-eyebrow">FAMILY TRIP DASHBOARD</div>
+    <h1>후쿠오카 · 유후인 · 벳푸 가족여행</h1>
+    <p class="lead">3박 4일 규슈 가족 여행의 전체 일정, 명소 정보, 예산과 실사용 비용을 한 곳에서 확인하는 대시보드입니다.</p>
+    <div class="hero-meta">
+      <span class="pill"><span class="icon" data-icon="calendar"></span> 2026.11.06(금) – 11.09(월) · 3박4일</span>
+      <span class="pill"><span class="icon" data-icon="map-pin"></span> 후쿠오카 · 유후인 · 벳푸 · 아소</span>
+      <span class="pill"><span class="icon" data-icon="car"></span> 렌터카 (미쓰비시 델리카)</span>
+    </div>
+  </div>
+  <div class="hero-parallax-credit" id="heroParallaxCredit"></div>
+</section>
+
+<main class="container">
+
+  <!-- ================= 일정 요약 ================= -->
+  <section class="section" id="schedule">
+    <div class="section-head">
+      <h2><span class="icon" data-icon="calendar"></span> 일정 요약</h2>
+      <span class="section-desc">일자를 선택하면 상세 타임라인으로 이동합니다</span>
+    </div>
+    <div class="grid grid-4" id="dayCardGrid"></div>
+  </section>
+
+  <!-- ================= 비용 요약 ================= -->
+  <section class="section" id="cost-summary">
+    <div class="section-head">
+      <h2><span class="icon" data-icon="money"></span> 비용 요약</h2>
+      <a class="section-link" href="budget.html">실사용 비용 입력 →</a>
+    </div>
+    <div class="grid grid-4" id="statGrid"></div>
+
+    <div class="callout" id="flightFlagCallout" style="margin-top:14px;"></div>
+
+    <div class="grid grid-2" style="margin-top:16px;">
+      <div class="card chart-card">
+        <h3>카테고리별 계획 비용</h3>
+        <div class="chart-sub">사전 결제 + 일정 내 예정 지출 합계 (KRW)</div>
+        <div class="chart-box"><canvas id="catChart"></canvas></div>
+      </div>
+      <div class="card chart-card">
+        <h3>일자별 예정 지출 흐름</h3>
+        <div class="chart-sub">Day 1 ~ Day 4 현지 지출 예정액 (사전결제 제외)</div>
+        <div class="chart-box"><canvas id="dailyLineChart"></canvas></div>
+      </div>
+    </div>
+    <p class="muted" style="font-size:12px;margin-top:10px;">실제 사용 비용과의 비교, 실시간 환율 반영 상세 내역은 <a href="budget.html" style="text-decoration:underline;">예산·비용 트래커</a> 페이지에서 확인·입력할 수 있습니다.</p>
+  </section>
+
+  <!-- ================= 일자별 상세 ================= -->
+  <section class="section" id="itinerary-detail">
+    <div class="section-head">
+      <h2><span class="icon" data-icon="map"></span> 일자별 상세 일정</h2>
+    </div>
+    <div class="grid grid-2" id="dayDetailGrid"></div>
+  </section>
+
+  <!-- ================= 기타 정보 ================= -->
+  <section class="section" id="other-info">
+    <div class="section-head">
+      <h2><span class="icon" data-icon="suitcase"></span> 여행 준비 &amp; 기타 정보</h2>
+      <a class="section-link" href="info.html">전체 보기 →</a>
+    </div>
+    <div class="grid grid-4">
+      <a class="card day-card" href="info.html#weather">
+        <div class="info-icon"><span class="icon" data-icon="thermometer"></span></div>
+        <h3>11월 현지 날씨</h3>
+        <div class="day-card-desc">평균 최고 17℃ · 최저 8℃, 우산 준비 권장</div>
+      </a>
+      <a class="card day-card" href="info.html#driving">
+        <div class="info-icon"><span class="icon" data-icon="car"></span></div>
+        <h3>렌터카 · 운전 정보</h3>
+        <div class="day-card-desc">국제운전면허증 필수, 좌측통행 유의</div>
+      </a>
+      <a class="card day-card" href="info.html#sim">
+        <div class="info-icon"><span class="icon" data-icon="wifi"></span></div>
+        <h3>유심 · 와이파이</h3>
+        <div class="day-card-desc">공항 수령 eSIM/포켓와이파이 비교</div>
+      </a>
+      <a class="card day-card" href="info.html#packing">
+        <div class="info-icon"><span class="icon" data-icon="suitcase"></span></div>
+        <h3>준비물 체크리스트</h3>
+        <div class="day-card-desc">온천 세트 · 방한 겉옷 등</div>
+      </a>
+    </div>
+  </section>
+
+  <div id="fnContainer"></div>
+</main>
+
+<div id="siteFooter"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+<script src="js/data.js"></script>
+<script src="js/icons.js"></script>
+<script src="js/common.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/index.js"></script>
+</body>
+</html>

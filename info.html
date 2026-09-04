@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>여행 정보 — 후쿠오카 가족여행</title>
+<meta name="description" content="후쿠오카·유후인·벳푸 가족여행 날씨, 렌터카 운전정보, 유심/와이파이, 준비물, 온천 에티켓, 비상연락처 안내">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🗾</text></svg>">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="siteHeader"></div>
+
+<main class="container">
+
+  <section class="hero">
+    <div class="hero-eyebrow">TRIP INFO</div>
+    <h1>여행 준비 &amp; 기타 정보</h1>
+    <p class="lead">날씨, 운전, 통신, 준비물, 온천 에티켓, 비상연락처까지 — 출발 전 확인하면 좋은 실용 정보를 정리했습니다.</p>
+  </section>
+
+  <!-- ================= 숙소 정보 ================= -->
+  <section class="section" id="lodging">
+    <div class="section-head"><h2><span class="icon" data-icon="home"></span> 숙소 정보</h2></div>
+    <div class="grid grid-2" id="lodgingGrid"></div>
+  </section>
+
+  <!-- ================= 날씨 ================= -->
+  <section class="section" id="weather">
+    <div class="section-head"><h2><span class="icon" data-icon="thermometer"></span> 11월 현지 날씨</h2></div>
+    <div class="grid grid-4">
+      <div class="card stat-card"><div class="stat-label">평균 최고기온</div><div class="stat-value">17℃</div><div class="stat-sub">가벼운 재킷 권장</div></div>
+      <div class="card stat-card"><div class="stat-label">평균 최저기온</div><div class="stat-value">8℃</div><div class="stat-sub">아침·저녁 쌀쌀함</div></div>
+      <div class="card stat-card"><div class="stat-label">월 강수일수</div><div class="stat-value">12~15일</div><div class="stat-sub">우산·방수 겉옷 권장</div></div>
+      <div class="card stat-card"><div class="stat-label">일일 일조시간</div><div class="stat-value">4~5시간</div><div class="stat-sub">해가 짧아지는 시기</div></div>
+    </div>
+    <p class="callout" style="margin-top:14px;">가을에서 겨울로 넘어가는 시기로 낮과 밤의 기온차가 큽니다. 유후인·아소 등 산간 지역은 후쿠오카 시내보다 2~4℃ 더 낮을 수 있어 얇은 옷을 겹쳐 입는 레이어링을 추천합니다. <span id="fnWeatherRef"></span></p>
+  </section>
+
+  <!-- ================= 렌터카·운전 ================= -->
+  <section class="section" id="driving">
+    <div class="section-head"><h2><span class="icon" data-icon="car"></span> 렌터카 · 운전 정보</h2></div>
+    <div class="two-col">
+      <div class="card">
+        <h3 class="mt-0">체크리스트</h3>
+        <ul style="padding-left:18px;font-size:13.5px;color:var(--text-2);line-height:1.9;">
+          <li><strong>국제운전면허증(제네바협약)</strong> 필수 지참 — 한국 국내 면허증과 함께 소지 <span id="fnDrivingRef"></span></li>
+          <li>일본은 <strong>좌측통행</strong>, 운전석은 오른쪽입니다. 출발 전 와이퍼·방향지시등 위치를 미리 확인하세요.</li>
+          <li>내비게이션은 전화번호 또는 MapCode로 목적지 검색이 편리합니다.</li>
+          <li>고속도로 통행료는 ETC카드 또는 현금으로 결제, 렌터카 업체에 ETC카드 대여 여부 확인.</li>
+          <li>주유소는 셀프(セルフ)와 유인(有人) 방식이 있으며, 반납 전 만유(満タン) 주유 후 영수증 지참을 권장합니다.</li>
+          <li>주차는 대부분 유료 코인파킹, 관광지 주차장 요금은 별도 확인이 필요합니다.</li>
+        </ul>
+      </div>
+      <div class="callout">
+        <strong>Tip.</strong> 유후인·벳푸·아소 구간은 산길과 급커브가 많습니다. 야간 운전은 가급적 피하고, 일정에 여유 시간을 두는 것을 권장합니다.
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 유심/와이파이 ================= -->
+  <section class="section" id="sim">
+    <div class="section-head"><h2><span class="icon" data-icon="wifi"></span> 유심 · 와이파이</h2></div>
+    <div class="grid grid-2">
+      <div class="card">
+        <h3 class="mt-0">eSIM / 유심</h3>
+        <p style="font-size:13.5px;color:var(--text-2);">최근에는 공항 수령 없이 출국 전 앱으로 설치하는 eSIM이 편리합니다. 가족 여러 명이 각자 연락해야 한다면 인원수만큼 개별 유심/eSIM을, 함께 이동한다면 포켓와이파이 1대 공유가 비용 효율적입니다.</p>
+      </div>
+      <div class="card">
+        <h3 class="mt-0">포켓 와이파이</h3>
+        <p style="font-size:13.5px;color:var(--text-2);">후쿠오카 공항 도착 로비에서 사전 예약 수령이 가능합니다. 렌터카로 이동하는 일정 특성상 차량 내 여러 기기가 동시에 인터넷을 사용할 수 있어 편리합니다. 반납은 공항 우체통 또는 카운터를 이용하세요.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 온천 에티켓 ================= -->
+  <section class="section" id="onsen">
+    <div class="section-head"><h2><span class="icon" data-icon="droplet"></span> 온천 · 모래찜질 에티켓</h2></div>
+    <div class="card">
+      <ul style="padding-left:18px;font-size:13.5px;color:var(--text-2);line-height:1.9;margin:0;">
+        <li>탕에 들어가기 전 반드시 <strong>몸을 먼저 씻고</strong> 헹궈냅니다.</li>
+        <li>수건은 몸을 씻을 때만 사용하고, <strong>탕 안에 담그지 않도록</strong> 머리 위에 올려두거나 탈의실에 둡니다.</li>
+        <li>문신이 있는 경우 일부 시설은 입장이 제한될 수 있어 예약 전 확인이 필요합니다(스티커로 가리는 것이 허용되는 곳도 있음).</li>
+        <li>모래찜질(스나유)은 유카타를 입고 진행하며, 종료 후 샤워 시설을 이용해 모래를 씻어냅니다.</li>
+        <li>탕 안에서는 정숙하게, 큰 소리로 대화하거나 수영하지 않습니다.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= 준비물 ================= -->
+  <section class="section" id="packing">
+    <div class="section-head"><h2><span class="icon" data-icon="suitcase"></span> 준비물 체크리스트</h2></div>
+    <div class="grid grid-3">
+      <div class="card">
+        <h3 class="mt-0">서류 · 결제</h3>
+        <ul style="padding-left:18px;font-size:13.5px;color:var(--text-2);line-height:1.85;margin:0;">
+          <li>여권 (유효기간 6개월 이상)</li>
+          <li>국제운전면허증 + 국내면허증</li>
+          <li>여행자보험 가입 확인서</li>
+          <li>엔화 현금 + 해외결제 가능 카드</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 class="mt-0">의류</h3>
+        <ul style="padding-left:18px;font-size:13.5px;color:var(--text-2);line-height:1.85;margin:0;">
+          <li>얇은 겉옷/경량 패딩 (레이어링)</li>
+          <li>온천·모래찜질용 여벌 속옷·수영복</li>
+          <li>걷기 편한 신발 (아소 하이킹 대비)</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 class="mt-0">기타</h3>
+        <ul style="padding-left:18px;font-size:13.5px;color:var(--text-2);line-height:1.85;margin:0;">
+          <li>보조배터리 · 차량용 충전기</li>
+          <li>상비약(멀미약, 소화제 등)</li>
+          <li>휴대용 우산 · 접이식 장바구니</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 비상연락처 ================= -->
+  <section class="section" id="emergency">
+    <div class="section-head"><h2><span class="icon" data-icon="alert-triangle"></span> 비상연락처</h2></div>
+    <div class="grid grid-3">
+      <div class="card stat-card"><div class="stat-label">경찰</div><div class="stat-value">110</div><div class="stat-sub">일본 전국 공통</div></div>
+      <div class="card stat-card"><div class="stat-label">구급 · 화재</div><div class="stat-value">119</div><div class="stat-sub">일본 전국 공통</div></div>
+      <div class="card stat-card"><div class="stat-label">영사콜센터</div><div class="stat-value" style="font-size:18px;">+82-2-3210-0404</div><div class="stat-sub">24시간 해외 사건사고 상담</div></div>
+    </div>
+    <div class="callout" style="margin-top:14px;">주후쿠오카 대한민국 총영사관 주소·전화번호는 방문 전 최신 정보를 아래 공식 페이지에서 확인하세요. <span id="fnMofaRef"></span></div>
+  </section>
+
+  <div id="fnContainer"></div>
+</main>
+
+<div id="siteFooter"></div>
+
+<script src="js/data.js"></script>
+<script src="js/icons.js"></script>
+<script src="js/common.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/info.js"></script>
+</body>
+</html>
