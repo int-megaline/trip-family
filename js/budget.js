@@ -348,7 +348,7 @@
           if (!Array.isArray(imported)) throw new Error("invalid");
           imported.forEach(function (x) {
             if (x && expensesRef) {
-              delete x.docId; // 새로 추가 시 기존 docId 제거
+              delete x.docId;
               expensesRef.add(x);
             }
           });
@@ -386,6 +386,7 @@
     safe(renderPrepaid, "renderPrepaid");
     safe(renderTable, "renderTable");
     safe(renderCharts, "renderCharts");
+    if (TU && TU.hydrateIcons) safe(function () { TU.hydrateIcons(document); }, "hydrateIcons");
   }
 
   document.addEventListener("DOMContentLoaded", function () {
@@ -394,5 +395,6 @@
     safe(initToolbar, "initToolbar");
     renderAll();
     safe(renderFootnotes, "renderFootnotes");
+    if (TU && TU.hydrateIcons) safe(function () { TU.hydrateIcons(document); }, "hydrateIcons");
   });
 })();
