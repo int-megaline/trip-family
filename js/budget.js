@@ -16,6 +16,7 @@
   }
   function saveExpenses(list) {
     try { localStorage.setItem(STORE_KEY, JSON.stringify(list)); } catch (e) { /* noop */ }
+    if (window.TripCloud && window.TripCloud.enabled) window.TripCloud.set("expenses", list);
   }
   function loadFxCache() {
     try { return JSON.parse(localStorage.getItem(FX_CACHE_KEY) || "{}"); } catch (e) { return {}; }
@@ -238,19 +239,86 @@
     });
   }
 
+  // ---------------- 계획 총 예산 관리 (카테고리별 접기/펼치기 카드) ----------------
+  function renderBudgetPlan() {
+    var body = document.getElementById("budgetPlanBody");
+    var totalEl = document.getElementById("budgetPlanTotal");
+    if (!body) return;
+
+    var base = TD.plannedByCategory(prepaid);
+    var overrides = TU.loadBudgetOverrides();
+
+    body.innerHTML = TD.CATEGORIES.map(function (c) {
+      var hasOverride = overrides[c.key] !== undefined && overrides[c.key] !== null && overrides[c.key] !== "";
+      var val = hasOverride ? overrides[c.key] : (base[c.key] || 0);
+      return (
+        '<div class="budget-plan-row">' +
+          '<div class="budget-plan-label">' + TU.catChip(c.key) + '</div>' +
+          '<div class="budget-plan-input-wrap">' +
+            '<input type="number" min="0" step="1" class="budget-plan-input" data-cat="' + c.key + '" value="' + val + '">' +
+            (hasOverride ? '<button type="button" class="budget-plan-reset" data-cat-reset="' + c.key + '" title="자동 계산값으로 초기화">' + TU.icon("x-circle") + '</button>' : '') +
+          '</div>' +
+          '<div class="budget-plan-base">' + (hasOverride ? "자동 계산값: " + TU.formatKRW(base[c.key] || 0) : "일정·사전결제 데이터 기준 자동 계산") + '</div>' +
+        '</div>'
+      );
+    }).join("");
+    TU.hydrateIcons(body);
+
+    body.querySelectorAll(".budget-plan-input").forEach(function (inp) {
+      inp.addEventListener("change", function () {
+        var cat = inp.getAttribute("data-cat");
+        var ov = TU.loadBudgetOverrides();
+        if (inp.value === "") { delete ov[cat]; } else { ov[cat] = Number(inp.value); }
+        TU.saveBudgetOverrides(ov);
+        renderBudgetPlan();
+        renderStats();
+        renderCharts();
+      });
+    });
+    body.querySelectorAll("[data-cat-reset]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var cat = btn.getAttribute("data-cat-reset");
+        var ov = TU.loadBudgetOverrides();
+        delete ov[cat];
+        TU.saveBudgetOverrides(ov);
+        renderBudgetPlan();
+        renderStats();
+        renderCharts();
+      });
+    });
+
+    if (totalEl) totalEl.textContent = TU.formatKRW(TU.mergedPlannedTotal(prepaid));
+  }
+
+  function initBudgetPlan() {
+    var resetAllBtn = document.getElementById("budgetPlanResetAllBtn");
+    if (!resetAllBtn) return;
+    resetAllBtn.addEventListener("click", function () {
+      if (!confirm("모든 카테고리를 자동 계산값으로 초기화할까요? 직접 입력한 금액은 사라집니다.")) return;
+      TU.saveBudgetOverrides({});
+      renderBudgetPlan();
+      renderStats();
+      renderCharts();
+    });
+  }
+
   // ---------------- Stats ----------------
   function renderStats() {
     var grid = document.getElementById("budgetStatGrid");
-    var planned = TD.plannedTotal(prepaid);
-    var actualTotal = expenses.reduce(function (s, e) { return s + e.krw; }, 0);
+    var overrides = TU.loadBudgetOverrides();
+    var hasOverride = Object.keys(overrides).length > 0;
+    var planned = TU.mergedPlannedTotal(prepaid);
+    var paidPrepaidSum = prepaid.filter(function (p) { return p.status === "paid"; }).reduce(function (s, p) { return s + (p.price || 0); }, 0);
+    var expenseSum = expenses.reduce(function (s, e) { return s + e.krw; }, 0);
+    var actualTotal = expenseSum + paidPrepaidSum;
     var diff = planned - actualTotal;
     var days = {};
     expenses.forEach(function (e) { days[e.date] = (days[e.date] || 0) + e.krw; });
     var todayMax = Object.keys(days).reduce(function (m, d) { return Math.max(m, days[d]); }, 0);
 
     var stats = [
-      { label: "계획 총 예산", value: TU.formatKRW(planned), sub: "사전결제 + 일정 예정 지출" },
-      { label: "실사용 누적 합계", value: TU.formatKRW(actualTotal), sub: expenses.length + "건 입력됨" },
+      { label: "계획 총 예산", value: TU.formatKRW(planned), sub: "사전결제 + 일정 예정 지출" + (hasOverride ? " (일부 직접 설정됨)" : "") },
+      { label: "실사용 누적 합계", value: TU.formatKRW(actualTotal), sub: "사전결제 완료 " + TU.formatKRW(paidPrepaidSum) + " + 현지 입력 " + expenses.length + "건" },
       { label: "예산 대비 잔액", value: TU.formatKRW(diff), sub: diff >= 0 ? "예산 이내" : "예산 초과" },
       { label: "일별 최대 지출일", value: TU.formatKRW(todayMax), sub: Object.keys(days).length ? "최고 지출일 기준" : "입력된 내역 없음" }
     ];
@@ -278,10 +346,13 @@
       return;
     }
     var colors = themeColors();
-    var byCatPlanned = TD.plannedByCategory(prepaid);
+    var byCatPlanned = TU.mergedPlannedByCategory(prepaid);
     var byCatActual = {};
     TD.CATEGORIES.forEach(function (c) { byCatActual[c.key] = 0; });
     expenses.forEach(function (e) { byCatActual[e.category] = (byCatActual[e.category] || 0) + e.krw; });
+    prepaid.filter(function (p) { return p.status === "paid"; }).forEach(function (p) {
+      byCatActual[p.category] = (byCatActual[p.category] || 0) + (p.price || 0);
+    });
 
     var labels = TD.CATEGORIES.map(function (c) { return c.label; });
     var plannedData = TD.CATEGORIES.map(function (c) { return byCatPlanned[c.key] || 0; });
@@ -376,12 +447,43 @@
     document.getElementById("fnContainer").innerHTML = r.html;
   }
 
+  // 브라우저 저장 안내 문구: Firebase(클라우드) 연동 여부에 따라 문구를 바꿔줍니다.
+  function updateStorageNotice() {
+    var el = document.getElementById("storageNotice");
+    if (!el) return;
+    if (window.TripCloud && window.TripCloud.enabled) {
+      el.innerHTML = TU.icon("smartphone") + ' 입력한 내역은 <strong>클라우드(Firebase)에 저장되어 가족 모든 기기에서 실시간으로 공유</strong>됩니다.';
+    } else {
+      el.innerHTML = TU.icon("smartphone") + ' 입력한 내역은 <strong>이 브라우저(기기)에 자동 저장</strong>됩니다. 가족과 함께 기록하려면 하단의 <strong>내보내기 / 가져오기</strong> 기능으로 데이터를 공유하세요.';
+    }
+    TU.hydrateIcons(el);
+  }
+
+  // 다른 기기/가족 구성원이 저장한 변경사항을 실시간으로 반영합니다.
+  function initCloudSync() {
+    TU.cloudSync("prepaid", function () { return prepaid; }, function (cloudList) {
+      prepaid = cloudList || [];
+      try { localStorage.setItem(TU.PREPAID_KEY, JSON.stringify(prepaid)); } catch (e) { /* noop */ }
+      renderAll();
+    });
+    TU.cloudSync("expenses", function () { return expenses; }, function (cloudList) {
+      expenses = cloudList || [];
+      try { localStorage.setItem(STORE_KEY, JSON.stringify(expenses)); } catch (e) { /* noop */ }
+      renderAll();
+    });
+    TU.cloudSync("budgetOverrides", function () { return TU.loadBudgetOverrides(); }, function (cloudObj) {
+      try { localStorage.setItem(TU.BUDGET_OVERRIDE_KEY, JSON.stringify(cloudObj || {})); } catch (e) { /* noop */ }
+      renderAll();
+    });
+  }
+
   function safe(fn, label) {
     try { fn(); } catch (e) { console.error("[budget.js] " + label + " failed:", e); }
   }
 
   function renderAll() {
     safe(renderStats, "renderStats");
+    safe(renderBudgetPlan, "renderBudgetPlan");
     safe(renderPrepaid, "renderPrepaid");
     safe(renderTable, "renderTable");
     safe(renderCharts, "renderCharts");
@@ -389,8 +491,11 @@
 
   document.addEventListener("DOMContentLoaded", function () {
     safe(initForm, "initForm");
+    safe(initBudgetPlan, "initBudgetPlan");
     safe(initPrepaid, "initPrepaid");
     safe(initToolbar, "initToolbar");
+    safe(updateStorageNotice, "updateStorageNotice");
+    safe(initCloudSync, "initCloudSync");
     renderAll();
     safe(renderFootnotes, "renderFootnotes");
   });

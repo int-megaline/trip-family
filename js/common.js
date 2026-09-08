@@ -141,19 +141,68 @@
     // 없으면 data.js의 기본 시드값(TripData.PREPAID)을 복제해 반환합니다.
     PREPAID_KEY: "fukuoka-trip-prepaid-v1",
     loadPrepaid: function () {
+      var list;
       try {
         var raw = localStorage.getItem(this.PREPAID_KEY);
-        if (raw) return JSON.parse(raw);
+        if (raw) list = JSON.parse(raw);
       } catch (e) { /* noop */ }
-      try {
-        return JSON.parse(JSON.stringify((window.TripData && window.TripData.PREPAID) || []));
-      } catch (e) { return []; }
+      if (!list) {
+        try {
+          list = JSON.parse(JSON.stringify((window.TripData && window.TripData.PREPAID) || []));
+        } catch (e) { list = []; }
+      }
+      // 예전에 저장된 항목에 남아있을 수 있는 flag(확인 필요 안내)는 data.js에서
+      // 이미 해소된 것으로 간주하고 화면에는 표시하지 않습니다.
+      list.forEach(function (p) { if (p && p.flag) delete p.flag; });
+      return list;
     },
     savePrepaid: function (list) {
       try { localStorage.setItem(this.PREPAID_KEY, JSON.stringify(list)); } catch (e) { /* noop */ }
+      if (window.TripCloud && window.TripCloud.enabled) window.TripCloud.set("prepaid", list);
     },
     resetPrepaid: function () {
       try { localStorage.removeItem(this.PREPAID_KEY); } catch (e) { /* noop */ }
+      if (window.TripCloud && window.TripCloud.enabled) {
+        window.TripCloud.set("prepaid", JSON.parse(JSON.stringify((window.TripData && window.TripData.PREPAID) || [])));
+      }
+    },
+    // 계획 총 예산(카테고리별) 수동 조정값. 값이 없는 카테고리는 자동 계산값
+    // (일정 데이터 + 사전결제 합계)을 그대로 사용합니다.
+    BUDGET_OVERRIDE_KEY: "fukuoka-trip-budget-overrides-v1",
+    loadBudgetOverrides: function () {
+      try { return JSON.parse(localStorage.getItem(this.BUDGET_OVERRIDE_KEY) || "{}"); } catch (e) { return {}; }
+    },
+    saveBudgetOverrides: function (obj) {
+      try { localStorage.setItem(this.BUDGET_OVERRIDE_KEY, JSON.stringify(obj)); } catch (e) { /* noop */ }
+      if (window.TripCloud && window.TripCloud.enabled) window.TripCloud.set("budgetOverrides", obj);
+    },
+    // 클라우드(Firebase)가 설정되어 있으면 path의 값을 실시간 구독하고, 변경될
+    // 때마다 onChange(cloudValue)를 호출합니다. 클라우드가 아직 비어있으면(이
+    // 프로젝트를 처음 쓰는 경우) getLocalValue()의 현재 값을 한 번 올려 기준값으로
+    // 삼습니다. 클라우드가 설정되어 있지 않으면 아무 것도 하지 않고 빈 해제 함수를
+    // 반환합니다(기존 localStorage 전용 동작 그대로 유지).
+    cloudSync: function (path, getLocalValue, onChange) {
+      if (!window.TripCloud || !window.TripCloud.enabled) return function () { /* noop */ };
+      return window.TripCloud.sync(path, getLocalValue, onChange);
+    },
+    // 카테고리별 "계획" 금액: 수동 조정값이 있으면 그 값, 없으면 자동 계산값(TripData.plannedByCategory)
+    mergedPlannedByCategory: function (prepaidList) {
+      var TD = window.TripData;
+      if (!TD) return {};
+      var base = TD.plannedByCategory(prepaidList);
+      var overrides = this.loadBudgetOverrides();
+      var merged = {};
+      TD.CATEGORIES.forEach(function (c) {
+        var ov = overrides[c.key];
+        merged[c.key] = (ov !== undefined && ov !== null && ov !== "") ? Number(ov) : (base[c.key] || 0);
+      });
+      return merged;
+    },
+    mergedPlannedTotal: function (prepaidList) {
+      var merged = this.mergedPlannedByCategory(prepaidList);
+      var t = 0;
+      Object.keys(merged).forEach(function (k) { t += merged[k] || 0; });
+      return t;
     },
     catChip: function (catKey) {
       var cat = (window.TripData && window.TripData.CATEGORIES || []).find(function (c) { return c.key === catKey; });

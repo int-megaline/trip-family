@@ -649,6 +649,45 @@ hr.sep { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
 .status-chip.paid { background: var(--accent); color: var(--accent-contrast); }
 .status-chip.pending { background: var(--chip-bg); color: var(--text-2); border: 1px solid var(--border); }
 
+/* ---------------- 계획 총 예산 관리 (접기/펼치기 카드) ---------------- */
+.budget-plan-card { padding: 0; overflow: hidden; }
+.budget-plan-card > summary {
+  list-style: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 18px 20px;
+}
+.budget-plan-card > summary::-webkit-details-marker { display: none; }
+.budget-plan-card > summary::marker { content: ""; }
+.budget-plan-summary-title { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 15.5px; }
+.budget-plan-summary-right { display: flex; align-items: center; gap: 10px; }
+.budget-plan-summary-total { font-weight: 800; font-size: 15px; }
+.budget-plan-card .chevron { width: 16px; height: 16px; color: var(--text-3); transition: transform .2s ease; }
+.budget-plan-card[open] .chevron { transform: rotate(180deg); }
+.budget-plan-body { padding: 0 20px 20px; }
+.budget-plan-desc { font-size: 12.5px; margin: 0 0 14px; }
+.budget-plan-grid { display: flex; flex-direction: column; }
+.budget-plan-row {
+  display: grid; grid-template-columns: 140px 170px 1fr; gap: 14px; align-items: center;
+  padding: 12px 0; border-top: 1px solid var(--border);
+}
+.budget-plan-row:first-child { border-top: none; }
+.budget-plan-input-wrap { display: flex; align-items: center; gap: 6px; }
+.budget-plan-input {
+  width: 100%; padding: 8px 10px; border-radius: var(--radius-sm);
+  border: 1px solid var(--border); background: var(--bg-elev); color: var(--text); font-size: 13px;
+}
+.budget-plan-input:focus { outline: none; border-color: var(--border-strong); }
+.budget-plan-reset {
+  background: none; border: none; cursor: pointer; color: var(--text-3);
+  padding: 4px; display: flex; align-items: center; flex-shrink: 0;
+}
+.budget-plan-reset:hover { color: var(--text); }
+.budget-plan-reset .icon { width: 15px; height: 15px; }
+.budget-plan-base { font-size: 11.5px; color: var(--text-3); }
+@media (max-width: 640px) {
+  .budget-plan-row { grid-template-columns: 1fr; gap: 6px; }
+}
+
 /* ---------------- 숙소 정보 카드 ---------------- */
 .lodging-card {
   display: flex; flex-direction: column; gap: 8px;

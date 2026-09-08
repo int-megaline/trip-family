@@ -65,8 +65,7 @@
   // 추가/수정/삭제가 가능하며, 그 결과는 이 배열을 시드값으로 브라우저에
   // 저장됩니다(TripUtil.loadPrepaid/savePrepaid 참고).
   var PREPAID = [
-    { id: "flight", activity: "항공권 결제", memo: "에어부산 BX453/BX454 왕복 · 성인 5명 · 1인 488,200원", category: "항공", price: 2441000, status: "paid",
-      flag: "sheet 원본 금액(24,410,000원)이 1인 단가(48.82만원) × 성인 5명 = 2,441,000원의 정확히 10배로 기재되어 있어, 자릿수 오류로 판단해 2,441,000원으로 자동 보정했습니다. 실제 결제 영수증과 반드시 대조 확인해 주세요." },
+    { id: "flight", activity: "항공권 결제", memo: "에어부산 BX453/BX454 왕복 · 성인 5명 · 1인 488,200원 (원본 시트 10배 기재 오류 보정, 확인 완료)", category: "항공", price: 2441000, status: "paid" },
     { id: "rentcar", activity: "렌터카 예약 결제", memo: "미쓰비시 델리카 (보험 포함)", category: "렌트", price: 372000, status: "pending" },
     { id: "lodging-beppu", activity: "숙소 예약 결제 – 벳푸", memo: "카메카와 유카리 안(亀川中央町) · 67,500원/인 기준 2박(11/6~11/8)", category: "숙박", price: 675773, status: "pending" },
     { id: "lodging-fukuoka", activity: "숙소 예약 결제 – 후쿠오카", memo: "70,000원/인 기준 1박(11/8~11/9)", category: "숙박", price: 350000, status: "pending" }

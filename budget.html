@@ -17,12 +17,30 @@
     <div class="hero-eyebrow">BUDGET TRACKER</div>
     <h1>예산 · 비용 트래커</h1>
     <p class="lead">현지에서 사용한 비용을 날짜·항목별로 기록하면 원화 환산, 일별/전체 누적 합계, 카테고리별 계획 대비 실사용 비교 차트가 자동으로 갱신됩니다.</p>
-    <div class="callout"><span class="icon" data-icon="smartphone"></span> 입력한 내역은 <strong>이 브라우저(기기)에 자동 저장</strong>됩니다. 가족과 함께 기록하려면 하단의 <strong>내보내기 / 가져오기</strong> 기능으로 데이터를 공유하세요.</div>
+    <div class="callout" id="storageNotice"><span class="icon" data-icon="smartphone"></span> 입력한 내역은 <strong>이 브라우저(기기)에 자동 저장</strong>됩니다. 가족과 함께 기록하려면 하단의 <strong>내보내기 / 가져오기</strong> 기능으로 데이터를 공유하세요.</div>
   </section>
 
   <!-- ================= 요약 스탯 ================= -->
   <section class="section">
     <div class="grid grid-4" id="budgetStatGrid"></div>
+  </section>
+
+  <!-- ================= 계획 총 예산 관리 (카테고리별, 접기/펼치기) ================= -->
+  <section class="section">
+    <details class="card budget-plan-card" id="budgetPlanDetails">
+      <summary class="budget-plan-summary">
+        <span class="budget-plan-summary-title"><span class="icon" data-icon="edit"></span> 계획 총 예산 관리</span>
+        <span class="budget-plan-summary-right">
+          <span class="budget-plan-summary-total" id="budgetPlanTotal">-</span>
+          <span class="icon chevron" data-icon="chevron-down"></span>
+        </span>
+      </summary>
+      <div class="budget-plan-body">
+        <p class="budget-plan-desc muted">카테고리별 계획 예산을 직접 입력해 조정할 수 있습니다. 비워두면 일정·사전결제 데이터 기준 자동 계산값을 사용합니다.</p>
+        <div class="budget-plan-grid" id="budgetPlanBody"></div>
+        <button type="button" class="btn btn-sm" id="budgetPlanResetAllBtn" style="margin-top:12px;">전체 자동 계산값으로 초기화</button>
+      </div>
+    </details>
   </section>
 
   <!-- ================= 사전 결제(선결제) 관리 ================= -->
@@ -146,7 +164,7 @@
       </div>
       <div class="card chart-card">
         <h3>실사용 비용 카테고리 비중</h3>
-        <div class="chart-sub">현재까지 입력된 실사용 내역 기준</div>
+        <div class="chart-sub">사전결제 완료 + 현지 입력 내역 기준</div>
         <div class="chart-box tall"><canvas id="pieChart"></canvas></div>
       </div>
     </div>
@@ -159,6 +177,8 @@
 
 <script src="js/chart.umd.js"></script>
 <script src="js/data.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="js/cloud.js"></script>
 <script src="js/icons.js"></script>
 <script src="js/common.js"></script>
 <script src="js/layout.js"></script>

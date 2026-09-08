@@ -38,7 +38,9 @@
     home: svg('<path d="M4 11.5 12 4l8 7.5"/><path d="M6 10v9.5a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V10"/><path d="M10 20.5V14h4v6.5"/>'),
     "external-link": svg('<path d="M14 3h7v7"/><path d="M21 3 10 14"/><path d="M20 14v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h6"/>'),
     "check-circle": svg('<circle cx="12" cy="12" r="9"/><polyline points="7.5 12.5 10.5 15.5 16.5 9"/>'),
-    circle: svg('<circle cx="12" cy="12" r="9"/>')
+    circle: svg('<circle cx="12" cy="12" r="9"/>'),
+    "chevron-down": svg('<polyline points="6 9 12 15 18 9"/>'),
+    "x-circle": svg('<circle cx="12" cy="12" r="9"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/>')
   };
 
   global.ICONS = ICONS;

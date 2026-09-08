@@ -38,7 +38,7 @@
   function renderStats() {
     var grid = document.getElementById("statGrid");
     var prepaidList = TU.loadPrepaid();
-    var total = TD.plannedTotal(prepaidList);
+    var total = TU.mergedPlannedTotal(prepaidList);
     var prepaidSum = prepaidList.reduce(function (s, p) { return s + (p.price || 0); }, 0);
     var paidSum = prepaidList.filter(function (p) { return p.status === "paid"; }).reduce(function (s, p) { return s + (p.price || 0); }, 0);
     var pendingSum = prepaidSum - paidSum;
@@ -74,7 +74,7 @@
       });
       return;
     }
-    var byCat = TD.plannedByCategory(TU.loadPrepaid());
+    var byCat = TU.mergedPlannedByCategory(TU.loadPrepaid());
     var labels = TD.CATEGORIES.map(function (c) { return c.label; });
     var values = TD.CATEGORIES.map(function (c) { return byCat[c.key] || 0; });
     var colors = ["#7fa9d8","#6f9bcb","#a79bd0","#9fbfd8","#cf9aa4","#d8b27f","#7fb99a","#e0c68f","#b9bac0"];
@@ -157,6 +157,21 @@
     try { fn(); } catch (e) { console.error("[index.js] " + label + " failed:", e); }
   }
 
+  // budget.html에서 입력한 사전결제/계획예산이 클라우드(Firebase)에 연동되어
+  // 있으면, 다른 기기에서의 변경사항도 이 페이지 통계·차트에 실시간 반영합니다.
+  function initCloudSync() {
+    TU.cloudSync("prepaid", function () { return TU.loadPrepaid(); }, function (cloudList) {
+      try { localStorage.setItem(TU.PREPAID_KEY, JSON.stringify(cloudList || [])); } catch (e) { /* noop */ }
+      safe(renderStats, "renderStats");
+      safe(renderCharts, "renderCharts");
+    });
+    TU.cloudSync("budgetOverrides", function () { return TU.loadBudgetOverrides(); }, function (cloudObj) {
+      try { localStorage.setItem(TU.BUDGET_OVERRIDE_KEY, JSON.stringify(cloudObj || {})); } catch (e) { /* noop */ }
+      safe(renderStats, "renderStats");
+      safe(renderCharts, "renderCharts");
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     safe(initHeroParallax, "initHeroParallax");
     safe(renderDayCards, "renderDayCards");
@@ -164,5 +179,6 @@
     safe(renderCharts, "renderCharts");
     safe(renderDayDetailGrid, "renderDayDetailGrid");
     safe(renderFootnotes, "renderFootnotes");
+    safe(initCloudSync, "initCloudSync");
   });
 })();
