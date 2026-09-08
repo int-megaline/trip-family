@@ -1,30 +1,34 @@
 (function () {
   "use strict";
   var TD = window.TripData, TU = window.TripUtil;
-  var FALLBACK_RATE = 9.3; // 1 JPY -> KRW, 자동 조회 실패 시 대체값
+  var STORE_KEY = "fukuoka-trip-expenses-v1";
+  var FX_CACHE_KEY = "fukuoka-trip-fxcache-v1";
+  var FALLBACK_RATE = 9.3; // 1 JPY -> KRW, 자동 조회 실패 시 대체값 (수동 편집 가능)
 
   var catChart, pieChart;
-  var prepaid = TU ? TU.loadPrepaid() : [];
-  var fxCache = {};
 
-  // ---------------- Firestore Database 연결 ----------------
-  var expensesRef = window.db ? window.db.collection("expenses") : null;
-  var expenses = [];
-
-  // Firestore 실시간 데이터 수신
-  if (expensesRef) {
-    expensesRef.onSnapshot(function (snapshot) {
-      expenses = [];
-      snapshot.forEach(function (doc) {
-        var data = doc.data();
-        data.docId = doc.id; // 삭제에 사용할 문서 고유 ID 저장
-        expenses.push(data);
-      });
-      renderAll();
-    });
+  // ---------------- localStorage helpers ----------------
+  function loadExpenses() {
+    try {
+      var raw = localStorage.getItem(STORE_KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch (e) { return []; }
+  }
+  function saveExpenses(list) {
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(list)); } catch (e) { /* noop */ }
+  }
+  function loadFxCache() {
+    try { return JSON.parse(localStorage.getItem(FX_CACHE_KEY) || "{}"); } catch (e) { return {}; }
+  }
+  function saveFxCache(cache) {
+    try { localStorage.setItem(FX_CACHE_KEY, JSON.stringify(cache)); } catch (e) { /* noop */ }
   }
 
-  // ---------------- FX rate fetch ----------------
+  var expenses = loadExpenses();
+  var fxCache = loadFxCache();
+  var prepaid = TU.loadPrepaid();
+
+  // ---------------- FX rate fetch (Frankfurter API, ECB 기준) ----------------
   function getRateForDate(dateStr, cb) {
     if (fxCache[dateStr]) { cb(fxCache[dateStr], true); return; }
     var url = "https://api.frankfurter.app/" + dateStr + "?from=JPY&to=KRW";
@@ -35,6 +39,7 @@
       var rate = data && data.rates && data.rates.KRW;
       if (!rate) throw new Error("no rate");
       fxCache[dateStr] = rate;
+      saveFxCache(fxCache);
       cb(rate, false);
     }).catch(function () {
       cb(FALLBACK_RATE, false, true);
@@ -79,27 +84,22 @@
       e.preventDefault();
       var jpy = parseFloat(jpyInput.value) || 0;
       if (!jpy) return;
-
-      var newItem = {
+      expenses.push({
+        id: Date.now() + "-" + Math.random().toString(36).slice(2, 7),
         date: dateInput.value,
         category: catSelect.value,
         detail: document.getElementById("f-detail").value.trim(),
         jpy: jpy,
         rate: currentRate,
         krw: Math.round(jpy * currentRate),
-        memo: document.getElementById("f-memo").value.trim(),
-        createdAt: Date.now()
-      };
-
-      // Firestore DB에 데이터 저장
-      if (expensesRef) {
-        expensesRef.add(newItem);
-      }
-
+        memo: document.getElementById("f-memo").value.trim()
+      });
+      saveExpenses(expenses);
       document.getElementById("f-detail").value = "";
       jpyInput.value = "";
       document.getElementById("f-memo").value = "";
       krwInput.value = "";
+      renderAll();
     });
   }
 
@@ -109,7 +109,11 @@
   function renderPrepaid() {
     var tbody = document.getElementById("prepaidTbody");
     if (!tbody) return;
-
+    // 참고: .table-wrap은 가로 스크롤을 위해 overflow-x:auto를 쓰는데, 이 경우
+    // overflow-y도 사실상 auto로 취급되어(CSS 스펙) 테이블 안에 커스텀 툴팁
+    // 말풍선(.tip)을 넣으면 day 페이지에서 고쳤던 것과 같은 방식으로 잘려
+    // 보일 수 있습니다. 그래서 표 안에서는 네이티브 title 속성만 쓰고,
+    // 전체 설명은 표 아래 콜아웃에 별도로 보여줍니다.
     var flagged = prepaid.filter(function (p) { return p.flag; });
     var flagBox = document.getElementById("prepaidFlagCallout");
     if (flagBox) {
@@ -219,7 +223,7 @@
           '<td data-label="일별 누적">' + TU.formatKRW(dayRunning[e.date]) + '</td>' +
           '<td data-label="전체 누적">' + TU.formatKRW(grandRunning) + '</td>' +
           '<td data-label="비고" class="wrap">' + TU.escapeHtml(e.memo || "-") + '</td>' +
-          '<td data-label=""><button class="btn btn-sm btn-danger" data-del="' + e.docId + '">삭제</button></td>' +
+          '<td data-label=""><button class="btn btn-sm btn-danger" data-del="' + e.id + '">삭제</button></td>' +
         '</tr>'
       );
     });
@@ -227,11 +231,9 @@
 
     tbody.querySelectorAll("[data-del]").forEach(function (btn) {
       btn.addEventListener("click", function () {
-        var docId = btn.getAttribute("data-del");
-        // Firestore DB에서 삭제
-        if (expensesRef && docId) {
-          expensesRef.doc(docId).delete();
-        }
+        expenses = expenses.filter(function (e) { return e.id !== btn.getAttribute("data-del"); });
+        saveExpenses(expenses);
+        renderAll();
       });
     });
   }
@@ -346,12 +348,11 @@
         try {
           var imported = JSON.parse(reader.result);
           if (!Array.isArray(imported)) throw new Error("invalid");
-          imported.forEach(function (x) {
-            if (x && expensesRef) {
-              delete x.docId;
-              expensesRef.add(x);
-            }
-          });
+          var existingIds = {};
+          expenses.forEach(function (x) { existingIds[x.id] = true; });
+          imported.forEach(function (x) { if (x && x.id && !existingIds[x.id]) expenses.push(x); });
+          saveExpenses(expenses);
+          renderAll();
           alert("가져오기가 완료되었습니다. (" + imported.length + "건 처리)");
         } catch (err) {
           alert("파일을 읽을 수 없습니다. 올바른 내보내기 JSON 파일인지 확인해 주세요.");
@@ -364,11 +365,9 @@
     document.getElementById("clearBtn").addEventListener("click", function () {
       if (!expenses.length) return;
       if (!confirm("입력된 모든 사용 내역을 삭제할까요? 이 작업은 되돌릴 수 없습니다.")) return;
-      if (expensesRef) {
-        expenses.forEach(function (e) {
-          if (e.docId) expensesRef.doc(e.docId).delete();
-        });
-      }
+      expenses = [];
+      saveExpenses(expenses);
+      renderAll();
     });
   }
 
@@ -386,7 +385,6 @@
     safe(renderPrepaid, "renderPrepaid");
     safe(renderTable, "renderTable");
     safe(renderCharts, "renderCharts");
-    if (TU && TU.hydrateIcons) safe(function () { TU.hydrateIcons(document); }, "hydrateIcons");
   }
 
   document.addEventListener("DOMContentLoaded", function () {
@@ -395,6 +393,5 @@
     safe(initToolbar, "initToolbar");
     renderAll();
     safe(renderFootnotes, "renderFootnotes");
-    if (TU && TU.hydrateIcons) safe(function () { TU.hydrateIcons(document); }, "hydrateIcons");
   });
 })();
