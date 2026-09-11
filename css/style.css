@@ -385,6 +385,9 @@ h2 .icon, .section-head h2 .icon { width: 19px; height: 19px; margin-right: 2px;
   .day-hero-photo-bg { transform: none !important; }
 }
 
+/* 맛집 가이드 구간별 대표 사진 — day-hero-photo와 동일 스타일, 높이만 축소 */
+.food-area-photo { height: clamp(150px, 20vw, 220px); margin: 14px 0 18px; }
+
 .hero-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 4px; }
 .pill {
   display: inline-flex; align-items: center; gap: 6px;
@@ -528,6 +531,13 @@ table.data-table td.wrap { white-space: normal; }
 .tl-card-body h4 { margin: 0 0 6px; font-size: 15.5px; font-weight: 800; }
 .tl-card-body .tl-loc { font-size: 12.5px; color: var(--text-2); margin-bottom: 8px; display: flex; align-items: center; gap: 5px; }
 .tl-card-body .tl-desc { font-size: 13.5px; color: var(--text-2); margin-bottom: 10px; }
+.tl-food-link {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 12px; font-weight: 700; color: var(--text-2);
+  text-decoration: none; margin-bottom: 10px;
+}
+.tl-food-link .icon { width: 13px; height: 13px; }
+.tl-food-link:hover { color: var(--text); }
 .tl-card-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
 .tl-price { font-weight: 800; font-size: 14px; }
 .photo-credit { font-size: 10.5px; color: var(--text-3); padding: 6px 16px 12px; }

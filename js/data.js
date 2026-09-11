@@ -36,7 +36,18 @@
     driving: { label: "일본 렌터카 이용 안내 – Japan Travel (JNTO 공식)", url: "https://www.japan.travel/en/plan/getting-around/cars/" },
     mofa: { label: "주후쿠오카 대한민국 총영사관 – 주소 및 연락처(외교부 공식)", url: "https://overseas.mofa.go.kr/jp-fukuoka-ko/wpge/m_1587/contents.do" },
     heroImage: { label: "후쿠오카 스카이라인(모모치 해변) – Wikimedia Commons", url: "https://commons.wikimedia.org/wiki/File:Fukuoka_Skyline_of_Seaside_Momochi.jpg" },
-    lodging: { label: "카메카와 유카리 안(亀川ゆかり庵) 예약 페이지 – Hotels.com", url: "https://kr.hotels.com/ho3224660736/kamekawa-yukari-ann-bespu-ilbon/?chkin=2026-11-06&chkout=2026-11-08" }
+    lodging: { label: "카메카와 유카리 안(亀川ゆかり庵) 예약 페이지 – Hotels.com", url: "https://kr.hotels.com/ho3224660736/kamekawa-yukari-ann-bespu-ilbon/?chkin=2026-11-06&chkout=2026-11-08" },
+
+    // ---- 맛집·먹거리 가이드 출처 ----
+    foodDazaifu: { label: "太宰府名物「梅ヶ枝餅」おすすめ4選 – じゃらんニュース", url: "https://www.jalan.net/news/article/646302/" },
+    foodHita: { label: "日田のご当地グルメ15選 – なっぷ", url: "https://www.nap-camp.com/mag/24820" },
+    foodYufuin1: { label: "湯の坪街道 厳選グルメ５選 – macaroni", url: "https://macaro-ni.jp/22587" },
+    foodYufuin2: { label: "湯布院のおすすめ人気ランチ11選 – なっぷ", url: "https://www.nap-camp.com/mag/49635" },
+    foodBeppu1: { label: "とり天！冷麺！地獄蒸し！別府で必食グルメ図鑑 – 楽天トラベル", url: "https://travel.rakuten.co.jp/mytrip/howto/beppu-gourmet-guide" },
+    foodBeppu2: { label: "豊後牛ステーキの店 そむり 別府本店 – 公式サイト", url: "https://www.somuri.net/beppu/index.html" },
+    foodAso: { label: "阿蘇で食べるべき絶品ランチ10選 – はらへり", url: "https://haraheri.net/article/1512/aso-lunch" },
+    foodHakata1: { label: "博多駅のおすすめ「とんこつラーメン」9選 – JR博多シティ", url: "https://www.jrhakatacity.com/deitos_hakata-ramen/" },
+    foodHakata2: { label: "カウンター博多もつ鍋おおやま – KITTE博多", url: "https://hakata.jp-kitte.jp/shop/index.jsp?bf=1&fmt=6&shopid=1300" }
   };
 
   // ---- 메인 페이지 상단 배경(패럴럭스) 이미지 --------------------------------
@@ -93,6 +104,118 @@
     }
   ];
 
+  // ---- 구간별 맛집·먹거리 가이드 ---------------------------------------------
+  // type: "특산품" | "간식" | "점심" | "저녁"
+  var FOOD_AREAS = [
+    {
+      id: "dazaifu", dayRef: 1, dayLabelText: "Day 1",
+      title: "다자이후 · 히타(마메다마치)",
+      desc: "참배길 원조 간식과 이동 중 들르는 히타 향토식",
+      photo: wmThumb("https://commons.wikimedia.org/wiki/File:20100719_Dazaifu_Tenmangu_Shrine_3328.jpg", 1400),
+      photoCredit: "Wikimedia Commons", photoCreditUrl: "https://commons.wikimedia.org/wiki/File:20100719_Dazaifu_Tenmangu_Shrine_3328.jpg",
+      items: [
+        { type: "특산품", name: "우메가에모찌 (梅ヶ枝餅)", shop: "かさの家 · 梅ヶ枝餅 やす武", price: "개당 150엔",
+          desc: "매화 모양으로 구운 팥소 찹쌀떡으로, 다자이후 참배길 어느 가게에서 사도 가격이 통일되어 있습니다.",
+          tip: "갓 구운 건 뜨거우니 살짝 식혀서 먹는 게 좋음", map: "太宰府天満宮 参道", sourceIds: ["foodDazaifu"] },
+        { type: "간식", name: "금상 고로케 (金賞コロッケ)", shop: "あじ華 金賞コロッケ 太宰府店", price: "개당 200엔대",
+          photo: wmThumb("https://commons.wikimedia.org/wiki/File:Korokke.jpg", 900),
+          photoCredit: "Wikimedia Commons (참고용 일반 고로케 이미지)", photoCreditUrl: "https://commons.wikimedia.org/wiki/File:Korokke.jpg",
+          desc: "겉은 바삭하고 속은 촉촉한 감자 고로케로, 참배길 걸으면서 먹기 좋은 길거리 간식입니다.",
+          map: "太宰府天満宮 参道", sourceIds: ["foodDazaifu"] },
+        { type: "점심", name: "참배길 정식 · 우동", shop: "참배길 식당가", price: "1인 800~1,200엔대",
+          desc: "덮밥·우동·명란 요리 등을 파는 식당이 참배길에 모여 있어 다자이후 텐만구 관람 전후로 들르기 좋습니다.",
+          map: "太宰府天満宮 参道" },
+        { type: "점심", name: "히타 야키소바 (日田やきそば)", shop: "마메다마치 식당가", price: "1,150엔~",
+          desc: "가는 면을 바삭하게 볶아내는 히타시 향토 야키소바로, 오야마 댐 경유 전후 이동 중 식사로 적합합니다. (마메다마치)",
+          map: "豆田町 日田", sourceIds: ["foodHita"] },
+        { type: "점심", name: "도리텐 · 돈카츠 정식", shop: "定食家 笑 (마메다마치)", price: "900~1,200엔대",
+          desc: "천령일전(天領日田) 지역 포크로 만든 돈카츠와 유자후추 도리텐을 함께 즐길 수 있는 정식집입니다.",
+          map: "豆田町 日田" }
+      ]
+    },
+    {
+      id: "yufuin", dayRef: 2, dayLabelText: "Day 2",
+      title: "유후인 (긴린코 · 유노츠보 거리)",
+      desc: "호수 산책길과 유노츠보 거리의 대표 간식·점심",
+      photo: wmThumb("https://commons.wikimedia.org/wiki/File:View_of_Mount_Yufudake_and_Yufuin_Onsen_Street_in_front_of_Yufuin_Station.JPG", 1400),
+      photoCredit: "Wikimedia Commons", photoCreditUrl: "https://commons.wikimedia.org/wiki/File:View_of_Mount_Yufudake_and_Yufuin_Onsen_Street_in_front_of_Yufuin_Station.JPG",
+      items: [
+        { type: "간식", name: "금상 고로케 (湯布院金賞コロッケ)", shop: "湯布院金賞コロッケ 1호점·2호점", price: "개당 200엔대",
+          photo: wmThumb("https://commons.wikimedia.org/wiki/File:Korokke.jpg", 900),
+          photoCredit: "Wikimedia Commons (참고용 일반 고로케 이미지)", photoCreditUrl: "https://commons.wikimedia.org/wiki/File:Korokke.jpg",
+          desc: "유노츠보 거리를 대표하는 길거리 간식으로, TV 방영 이후 더욱 유명해진 명물 고로케입니다.",
+          tip: "대기 줄이 길 수 있으니 이동 동선 앞쪽에서 미리 구매 추천", map: "湯の坪街道 由布院", sourceIds: ["foodYufuin1"] },
+        { type: "간식", name: "치즈케이크 · 간장푸딩", shop: "由布院ミルヒ · 湯布院醤油屋 本店", price: "개당 400~500엔대",
+          desc: "3겹 치즈 스프레드 케이크(케제쿠헨)와 간장 향이 은은한 푸딩 등 유노츠보 거리 대표 디저트입니다.",
+          map: "湯の坪街道 由布院", sourceIds: ["foodYufuin1"] },
+        { type: "점심", name: "도리텐 · 당고지루 정식", shop: "花水木 · 由布院 甘味茶屋", price: "900~1,300엔대",
+          desc: "닭튀김(도리텐)과 수제비 된장국(당고지루) 등 오이타 향토식을 정식으로 구성해 내는 식당입니다.",
+          map: "湯の坪街道 由布院", sourceIds: ["foodYufuin2"] }
+      ]
+    },
+    {
+      id: "beppu", dayRef: 2, dayLabelText: "Day 2",
+      title: "벳푸 (지옥순례 · 모래찜질 인근)",
+      desc: "벳푸 8대 지옥·모래찜질 관광과 함께 즐기는 명물 먹거리",
+      photo: wmThumb("https://commons.wikimedia.org/wiki/File:Beppu_Kamado_Jigoku11n4272.jpg", 1400),
+      photoCredit: "Wikimedia Commons", photoCreditUrl: "https://commons.wikimedia.org/wiki/File:Beppu_Kamado_Jigoku11n4272.jpg",
+      items: [
+        { type: "특산품", name: "지옥찜 푸딩 (地獄蒸しプリン)", shop: "岡本屋売店", price: "개당 400엔대",
+          desc: "1988년부터 이어온 벳푸 명물로, 온천 증기로 쪄낸 진한 커스터드 푸딩입니다.",
+          map: "岡本屋売店 別府", sourceIds: ["foodBeppu1"] },
+        { type: "점심", name: "도리텐 정식 (とり天発祥の店)", shop: "レストラン東洋軒", price: "1,144~1,430엔",
+          desc: "벳푸에서 도리텐(닭튀김)을 처음 선보인 원조 식당으로, 폭신한 튀김옷이 특징입니다.",
+          map: "東洋軒 別府", sourceIds: ["foodBeppu1"] },
+        { type: "점심", name: "벳푸 냉면", shop: "冷麺専門店 六盛", price: "800~1,000엔대",
+          desc: "다시마와 소뼈로 우린 육수에 자가製 면을 사용하는 벳푸식 냉면 전문점입니다.",
+          map: "冷麺 六盛 別府", sourceIds: ["foodBeppu1"] },
+        { type: "저녁", name: "분고규 철판 스테이크", shop: "そむり 別府本店", price: "1,500~3,000엔대",
+          desc: "오이타 브랜드 소고기 분고규를 가성비 좋게 즐길 수 있는 철판구이 전문점입니다.",
+          map: "そむり 別府本店", sourceIds: ["foodBeppu2"] }
+      ]
+    },
+    {
+      id: "aso", dayRef: 3, dayLabelText: "Day 3",
+      title: "아소쿠주 국립공원 (구사센리 일대)",
+      desc: "화산 하이킹 전후로 즐기는 아소 목장 먹거리",
+      photo: wmThumb("https://commons.wikimedia.org/wiki/File:Aso_Nakadake_20150920_from_Kusasenri.JPG", 1400),
+      photoCredit: "Wikimedia Commons", photoCreditUrl: "https://commons.wikimedia.org/wiki/File:Aso_Nakadake_20150920_from_Kusasenri.JPG",
+      items: [
+        { type: "간식", name: "아소 우유 소프트아이스크림", shop: "道の駅 阿蘇 · ASOMILK", price: "개당 400~500엔대",
+          desc: "아소 초원에서 자란 소의 우유로 만든 진한 소프트아이스크림으로, 구사센리 방문 전후로 들르기 좋습니다.",
+          map: "道の駅 阿蘇" },
+        { type: "점심", name: "가라아게 정식", shop: "阿蘇 丸福", price: "880엔",
+          desc: "바삭한 튀김옷이 특징인 唐揚げ(가라아게) 전문점으로, 예산 안에서 든든하게 먹기 좋습니다.",
+          map: "阿蘇 丸福", sourceIds: ["foodAso"] },
+        { type: "점심", name: "아카규동 (あか牛丼)", shop: "いまきん食堂 · あか牛丼いわさき", price: "1,850~1,960엔",
+          desc: "희소 브랜드 소고기 '아소 아카규'를 올린 덮밥으로, 유명 맛집은 대기 시간이 길 수 있습니다.",
+          tip: "이마킨식당은 평일에도 대기가 긴 편이므로 시간 여유 있게 방문", map: "いまきん食堂 阿蘇", sourceIds: ["foodAso"] }
+      ]
+    },
+    {
+      id: "hakata", dayRef: 3, dayLabelText: "Day 3 · Day 4",
+      title: "하카타역 인근 (후쿠오카 시내)",
+      desc: "규슈 최대 터미널역에서 즐기는 후쿠오카 대표 먹거리",
+      photo: wmThumb("https://commons.wikimedia.org/wiki/File:JR_Hakata_station_,_JR_%E5%8D%9A%E5%A4%9A%E9%A7%85_-_panoramio.jpg", 1400),
+      photoCredit: "Wikimedia Commons", photoCreditUrl: "https://commons.wikimedia.org/wiki/File:JR_Hakata_station_,_JR_%E5%8D%9A%E5%A4%9A%E9%A7%85_-_panoramio.jpg",
+      items: [
+        { type: "저녁", name: "돈코츠 라멘", shop: "博多らーめんShin-Shin · 一幸舎 · 長浜ナンバーワン 등", price: "800~1,100엔",
+          photo: wmThumb("https://commons.wikimedia.org/wiki/File:TonkotsuRamen.jpg", 900),
+          photoCredit: "Wikimedia Commons", photoCreditUrl: "https://commons.wikimedia.org/wiki/File:TonkotsuRamen.jpg",
+          desc: "JR하카타시티 2층 '하카타 멘카이도'에 하카타 대표 돈코츠 라멘 명가들이 모여 있어 비교하며 즐길 수 있습니다.",
+          map: "JR博多シティ 博多めん街道", sourceIds: ["foodHakata1"] },
+        { type: "저녁", name: "모츠나베 (1인분 가능)", shop: "博多もつ鍋おおやま カウンター店", price: "1,580엔~",
+          photo: wmThumb("https://commons.wikimedia.org/wiki/File:Motsunabe.jpg", 900),
+          photoCredit: "Wikimedia Commons", photoCreditUrl: "https://commons.wikimedia.org/wiki/File:Motsunabe.jpg",
+          desc: "하카타역 직결 KITTE博多 지하에 위치한 카운터석 모츠나베 전문점으로, 1인분 주문도 가능합니다.",
+          map: "KITTE博多 博多もつ鍋おおやま", sourceIds: ["foodHakata2"] },
+        { type: "점심", name: "명란 요리 · 우동", shop: "하카타역 구내 식당가", price: "700~1,000엔대",
+          desc: "출국 전 마지막 식사로 부담 없는 명란 요리나 우동을 간단히 즐기기 좋습니다.",
+          map: "博多駅" }
+      ]
+    }
+  ];
+
   // ---- 일자별 상세 일정 -----------------------------------------------------
   var DAYS = [
     {
@@ -112,9 +235,9 @@
           desc: "학문의 신 스가와라노 미치자네를 모신 신사로 매년 수험생과 참배객이 몰리는 규슈 최고의 명소입니다. 매화나무 정원과 참배로 상점가(오미야게 거리)도 함께 둘러보기 좋습니다.",
           photo: wmThumb("https://commons.wikimedia.org/wiki/File:20100719_Dazaifu_Tenmangu_Shrine_3328.jpg"), photoCredit: "Wikimedia Commons",
           photoCreditUrl: "https://commons.wikimedia.org/wiki/File:20100719_Dazaifu_Tenmangu_Shrine_3328.jpg",
-          sourceIds: ["dazaifu"], map: "다자이후 텐만구" },
+          sourceIds: ["dazaifu"], map: "다자이후 텐만구", foodRef: "dazaifu" },
         { start: "16:10", end: "16:40", duration: "30분", activity: "마메다마치 인근 식사", location: "마메다마치 (히타)", category: "식사", memo: "덮밥 또는 라멘 · 고속도로 휴게소 대체 가능", price: 75000,
-          desc: "에도시대 상인 마을의 정취가 남아있는 히타시의 옛거리로, 이동 중 간단히 들러 식사하기 좋은 위치입니다.", map: "마메다마치 히타" },
+          desc: "에도시대 상인 마을의 정취가 남아있는 히타시의 옛거리로, 이동 중 간단히 들러 식사하기 좋은 위치입니다.", map: "마메다마치 히타", foodRef: "dazaifu" },
         { start: "17:10", end: "18:10", duration: "1시간", activity: "오야마 댐 경유", location: "오야마 댐 (히타시)", category: "관광지", memo: "애니메이션 '진격의 거인' 배경 영감지로 알려짐", price: null,
           desc: "저수지와 주변 산세가 어우러진 경관으로 잠깐 들러 사진 찍기 좋은 포인트입니다.",
           photo: wmThumb("https://commons.wikimedia.org/wiki/File:Oyama_Dam.jpg"), photoCredit: "Wikimedia Commons",
@@ -137,12 +260,12 @@
           desc: "아침 안개가 피어오르는 것으로 유명한 유후인의 상징적인 호수. 호수 주변으로 카페와 소품샵이 늘어서 있어 아침 산책 겸 브런치 코스로 인기가 많습니다.",
           photo: wmThumb("https://commons.wikimedia.org/wiki/File:Lake_Kinrin_in_Yufuin,_Oita_-_Aug_24,_2018_(1).jpg"), photoCredit: "Wikimedia Commons",
           photoCreditUrl: "https://commons.wikimedia.org/wiki/File:Lake_Kinrin_in_Yufuin,_Oita_-_Aug_24,_2018_(1).jpg",
-          sourceIds: ["kinrin"], map: "긴린코 유후인" },
+          sourceIds: ["kinrin"], map: "긴린코 유후인", foodRef: "yufuin" },
         { start: "10:00", end: "10:30", duration: "30분", activity: "유노츠보 거리 산책 & 쇼핑", location: "유노츠보 거리", category: "관광지", memo: null, price: null,
           desc: "긴린코에서 유후인역까지 이어지는 약 1.2km의 먹거리·기념품 거리로 유후인 관광의 중심가입니다.",
           photo: wmThumb("https://commons.wikimedia.org/wiki/File:View_of_Mount_Yufudake_and_Yufuin_Onsen_Street_in_front_of_Yufuin_Station.JPG"), photoCredit: "Wikimedia Commons",
           photoCreditUrl: "https://commons.wikimedia.org/wiki/File:View_of_Mount_Yufudake_and_Yufuin_Onsen_Street_in_front_of_Yufuin_Station.JPG",
-          sourceIds: ["yunotsubo"], map: "유노츠보 거리 유후인" },
+          sourceIds: ["yunotsubo"], map: "유노츠보 거리 유후인", foodRef: "yufuin" },
         { start: "10:30", end: "11:00", duration: "30분", activity: "사기리다이 전망대", location: "사기리다이 전망대", category: "관광지", memo: "유후산 조망 포인트, 실키로드 입구", price: null,
           desc: "유후산과 유후인 분지를 한눈에 내려다볼 수 있는 전망대로, 유후 실키로드 드라이브 코스의 입구이기도 합니다.",
           photo: wmThumb("https://commons.wikimedia.org/wiki/File:Yufuin_and_Mount_Yufu.jpg"), photoCredit: "Wikimedia Commons",
@@ -153,23 +276,23 @@
           photo: wmThumb("https://commons.wikimedia.org/wiki/File:View_of_Mount_Yufudake_and_Yufuin_Onsen_Street_in_front_of_Yufuin_Station_2.jpg"), photoCredit: "Wikimedia Commons",
           photoCreditUrl: "https://commons.wikimedia.org/wiki/File:View_of_Mount_Yufudake_and_Yufuin_Onsen_Street_in_front_of_Yufuin_Station_2.jpg",
           map: "由布サイロード" },
-        { start: "12:30", end: "13:30", duration: "1시간", activity: "간단 점심 (라멘/우동)", location: "벳푸시", category: "식사", memo: null, price: null },
+        { start: "12:30", end: "13:30", duration: "1시간", activity: "간단 점심 (라멘/우동)", location: "벳푸시", category: "식사", memo: null, price: null, foodRef: "beppu" },
         { start: "14:00", end: "14:30", duration: "30분", activity: "가마도 지옥 관람 (대체 옵션)", location: "가마도 지옥", category: "관광지", memo: "모래찜질과 양자택일 옵션", price: null,
           desc: "벳푸 8대 지옥 중 하나로, 부글부글 끓어오르는 뜨거운 온천과 독특한 조형물(가마솥 지옥할멈 상)이 특징입니다.",
           photo: wmThumb("https://commons.wikimedia.org/wiki/File:Beppu_Kamado_Jigoku11n4272.jpg"), photoCredit: "Wikimedia Commons",
           photoCreditUrl: "https://commons.wikimedia.org/wiki/File:Beppu_Kamado_Jigoku11n4272.jpg",
-          sourceIds: ["kamado"], map: "가마도지옥 벳푸" },
+          sourceIds: ["kamado"], map: "가마도지옥 벳푸", foodRef: "beppu" },
         { start: "14:00", end: "15:30", duration: "1시간 30분", activity: "벳푸 해변 모래찜질", location: "벳푸 해변 모래사장 (스나유)", category: "관광지", memo: "25,000원/인 기준", price: 125000,
           desc: "따뜻한 모래에 몸을 묻고 즐기는 벳푸 명물 온천 체험입니다. 유카타 대여가 포함되며 사전 예약 없이도 이용 가능하나 성수기 대기가 있을 수 있습니다.",
           photo: wmThumb("https://commons.wikimedia.org/wiki/File:Japanese_ladies_taking_a_sand_bath,_Beppr_Wellcome_V0049854.jpg"), photoCredit: "Wellcome Collection (Wikimedia Commons)",
           photoCreditUrl: "https://commons.wikimedia.org/wiki/File:Japanese_ladies_taking_a_sand_bath,_Beppr_Wellcome_V0049854.jpg",
-          sourceIds: ["sandbath"], map: "벳푸 해변 모래찜질" },
+          sourceIds: ["sandbath"], map: "벳푸 해변 모래찜질", foodRef: "beppu" },
         { start: "16:00", end: "17:30", duration: "1시간 30분", activity: "후타고지 사찰 관람", location: "후타고지 (Futagoji Temple)", category: "관광지", memo: "300엔/인", price: 15000,
           desc: "쿠니사키 반도 산악 불교의 중심 사찰로, 웅장한 인왕상과 가을 단풍으로 유명합니다.",
           photo: wmThumb("https://commons.wikimedia.org/wiki/File:Stone_Ni%C5%8D_Statues,_Futago-ji_temple,_Kunisaki_-_Mar_19,_2024.jpg"), photoCredit: "Wikimedia Commons",
           photoCreditUrl: "https://commons.wikimedia.org/wiki/File:Stone_Ni%C5%8D_Statues,_Futago-ji_temple,_Kunisaki_-_Mar_19,_2024.jpg",
           sourceIds: ["futagoji"], map: "후타고지 쿠니사키" },
-        { start: "18:00", end: "19:00", duration: "1시간", activity: "저녁 식사 (스시 또는 와규)", location: "벳푸 시내", category: "식사", memo: "분고규 · 유자후추 · 토리텐 센베이", price: 150000 }
+        { start: "18:00", end: "19:00", duration: "1시간", activity: "저녁 식사 (스시 또는 와규)", location: "벳푸 시내", category: "식사", memo: "분고규 · 유자후추 · 토리텐 센베이", price: 150000, foodRef: "beppu" }
       ]
     },
     {
@@ -189,15 +312,15 @@
           desc: "지금도 활동 중인 아소산 분화구와 드넓은 초원 구사센리가 펼쳐지는 일본 최대급 칼데라 국립공원입니다. 화산 활동 상황에 따라 분화구 접근이 통제될 수 있어 방문 전 최신 화산 정보 확인이 필요합니다.",
           photo: wmThumb("https://commons.wikimedia.org/wiki/File:Aso_Nakadake_20150920_from_Kusasenri.JPG"), photoCredit: "Wikimedia Commons",
           photoCreditUrl: "https://commons.wikimedia.org/wiki/File:Aso_Nakadake_20150920_from_Kusasenri.JPG",
-          sourceIds: ["aso"], map: "아소쿠주 국립공원" },
+          sourceIds: ["aso"], map: "아소쿠주 국립공원", foodRef: "aso" },
         { start: "15:30", end: "16:00", duration: "30분", activity: "숙소 체크인 (후쿠오카)", location: "후쿠오카 시내 숙소", category: "숙박", memo: "사전 결제 완료", price: null },
         { start: "16:00", end: "16:20", duration: "20분", activity: "렌터카 반납", location: "후쿠오카 시내 반납지점", category: "렌트", memo: null, price: null },
         { start: "17:30", end: "19:00", duration: "1시간 30분", activity: "돈키호테 & 역 주변 쇼핑", location: "하카타역", category: "쇼핑", memo: null, price: null,
           desc: "규슈 최대 터미널역으로 아뮤플라자, 돈키호테 등 쇼핑 시설이 밀집해 있습니다.",
           photo: wmThumb("https://commons.wikimedia.org/wiki/File:JR_Hakata_station_,_JR_%E5%8D%9A%E5%A4%9A%E9%A7%85_-_panoramio.jpg"), photoCredit: "Wikimedia Commons",
           photoCreditUrl: "https://commons.wikimedia.org/wiki/File:JR_Hakata_station_,_JR_%E5%8D%9A%E5%A4%9A%E9%A7%85_-_panoramio.jpg",
-          sourceIds: ["hakata"], map: "하카타역" },
-        { start: "19:00", end: "20:00", duration: "1시간", activity: "저녁 식사 (스시 또는 와규)", location: "하카타역 인근", category: "식사", memo: null, price: 150000 }
+          sourceIds: ["hakata"], map: "하카타역", foodRef: "hakata" },
+        { start: "19:00", end: "20:00", duration: "1시간", activity: "저녁 식사 (스시 또는 와규)", location: "하카타역 인근", category: "식사", memo: null, price: 150000, foodRef: "hakata" }
       ]
     },
     {
@@ -208,7 +331,7 @@
       heroCredit: "Wikimedia Commons", heroCreditUrl: "https://commons.wikimedia.org/wiki/File:Fukuoka_Airport_Terminal_1.JPG",
       items: [
         { start: "10:00", end: "10:20", duration: "20분", activity: "숙소 체크아웃 (후쿠오카)", location: "후쿠오카 시내 숙소", category: "숙박", memo: null, price: null },
-        { start: "10:30", end: "11:10", duration: "40분", activity: "식사 (출국 심사 후 가능)", location: "하카타역 인근", category: "식사", memo: "라멘 또는 우동", price: 75000 },
+        { start: "10:30", end: "11:10", duration: "40분", activity: "식사 (출국 심사 후 가능)", location: "하카타역 인근", category: "식사", memo: "라멘 또는 우동", price: 75000, foodRef: "hakata" },
         { start: "11:20", end: "11:50", duration: "30분", activity: "공항 이동", location: "하카타역 → 후쿠오카 공항", category: "기타", memo: "지하철 + 공항 셔틀버스, 300엔/인", price: 15000 },
         { start: "13:50", end: "15:30", duration: "1시간 40분", activity: "FUK → ICN 이동", location: "인천공항 (ICN)", category: "항공", memo: "에어부산 BX454", price: null,
           desc: "규슈 최대 관문 후쿠오카 공항에서 인천으로 귀국합니다. 국제선 터미널(제2터미널)은 국내선 터미널과 무료 셔틀버스로 연결됩니다.",
@@ -273,6 +396,7 @@
     CATEGORIES: CATEGORIES,
     PREPAID: PREPAID,
     LODGING: LODGING,
+    FOOD_AREAS: FOOD_AREAS,
     DAYS: DAYS,
     HERO_IMAGE: HERO_IMAGE,
     wmThumb: wmThumb,

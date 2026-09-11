@@ -13,6 +13,7 @@
     { href: "day3.html", label: "Day 3" },
     { href: "day4.html", label: "Day 4" },
     { href: "budget.html", label: "예산·비용" },
+    { href: "food.html", label: "맛집" },
     { href: "info.html", label: "여행 정보" }
   ];
 

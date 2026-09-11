@@ -1,0 +1,24 @@
+{
+  "name": "후쿠오카 · 유후인 · 벳푸 가족여행",
+  "short_name": "후쿠오카 여행",
+  "description": "2026.11.06~11.09 후쿠오카·유후인·벳푸 3박4일 가족여행 일정, 예산·비용 트래커, 맛집 가이드",
+  "start_url": "./index.html",
+  "scope": "./",
+  "id": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "lang": "ko",
+  "dir": "ltr",
+  "background_color": "#f5f5f7",
+  "theme_color": "#1a1a1c",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "예산·비용 트래커", "url": "./budget.html" },
+    { "name": "맛집 가이드", "url": "./food.html" }
+  ]
+}

@@ -274,6 +274,18 @@
     }
   };
 
+  // PWA: 서비스 워커 등록 — 앱 셸을 캐싱해 오프라인에서도 이전에 열어본
+  // 페이지를 볼 수 있게 합니다. HTTPS(또는 localhost)가 아니거나 브라우저가
+  // 지원하지 않으면 조용히 무시되고 사이트는 그대로 정상 동작합니다.
+  function registerServiceWorker() {
+    if (!("serviceWorker" in navigator)) return;
+    window.addEventListener("load", function () {
+      navigator.serviceWorker.register("./sw.js").catch(function (e) {
+        console.warn("[sw] 등록 실패(오프라인 캐싱 없이 계속 동작):", e);
+      });
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     initTheme();
     initDrawer();
@@ -281,6 +293,7 @@
     initBackToTop();
     markActiveNav();
     window.TripUtil.hydrateIcons();
+    registerServiceWorker();
   });
 
   // Apply theme ASAP (before DOMContentLoaded) to avoid flash of wrong theme

@@ -40,7 +40,8 @@
     "check-circle": svg('<circle cx="12" cy="12" r="9"/><polyline points="7.5 12.5 10.5 15.5 16.5 9"/>'),
     circle: svg('<circle cx="12" cy="12" r="9"/>'),
     "chevron-down": svg('<polyline points="6 9 12 15 18 9"/>'),
-    "x-circle": svg('<circle cx="12" cy="12" r="9"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/>')
+    "x-circle": svg('<circle cx="12" cy="12" r="9"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/>'),
+    utensils: svg('<path d="M7 3v7a2 2 0 0 0 2 2v9"/><path d="M7 3v5M10 3v5"/><path d="M17 3c-1.7 0-3 2-3 5.5S15.3 12 17 12v9"/>')
   };
 
   global.ICONS = ICONS;

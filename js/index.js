@@ -1,6 +1,7 @@
 (function () {
   "use strict";
   var TD = window.TripData, TU = window.TripUtil;
+  var catChartInst, dailyLineChartInst;
 
   // ---------------- 패럴럭스 히어로 배너 ----------------
   function initHeroParallax() {
@@ -84,7 +85,8 @@
     var gridColor = isDark ? "rgba(255,255,255,.08)" : "rgba(0,0,0,.06)";
     var tickColor = isDark ? "#b7b8bf" : "#55565c";
 
-    new Chart(document.getElementById("catChart"), {
+    if (catChartInst) catChartInst.destroy();
+    catChartInst = new Chart(document.getElementById("catChart"), {
       type: "bar",
       data: { labels: labels, datasets: [{ label: "계획 비용(KRW)", data: values, backgroundColor: colors, borderRadius: 6, maxBarThickness: 34 }] },
       options: {
@@ -103,7 +105,8 @@
     var cum = []; var run = 0;
     dayValues.forEach(function (v) { run += v; cum.push(run); });
 
-    new Chart(document.getElementById("dailyLineChart"), {
+    if (dailyLineChartInst) dailyLineChartInst.destroy();
+    dailyLineChartInst = new Chart(document.getElementById("dailyLineChart"), {
       type: "line",
       data: {
         labels: dayLabels,

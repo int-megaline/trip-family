@@ -57,6 +57,7 @@
         : '';
       var memoTip = it.memo ? TU.tip(it.memo) : '';
       var mapHtml = it.map ? ' · <a href="' + TD.mapLink(it.map) + '" target="_blank" rel="noopener">지도에서 보기 ↗</a>' : '';
+      var foodHtml = it.foodRef ? '<a href="food.html#area-' + it.foodRef + '" class="tl-food-link">' + TU.icon("utensils") + ' 맛집·먹거리 보기 →</a>' : '';
       var priceHtml = it.price ? '<span class="tl-price">' + TU.formatKRW(it.price) + '</span>' : '<span class="muted" style="font-size:12px;">비용 없음 / 무료</span>';
 
       return (
@@ -69,6 +70,7 @@
               '<h4>' + TU.escapeHtml(it.activity) + ' ' + memoTip + '</h4>' +
               '<div class="tl-loc">' + TU.icon("map-pin") + ' ' + TU.escapeHtml(it.location) + mapHtml + '</div>' +
               descHtml +
+              foodHtml +
               '<div class="tl-card-foot">' + TU.catChip(it.category) + priceHtml + '</div>' +
             '</div>' +
           '</div>' +
