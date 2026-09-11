@@ -130,10 +130,15 @@
 }
 
 * { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; }
+/* 모바일에서 긴 텍스트(각주 URL 등)가 뷰포트 밖으로 넘쳐 헤더의 다크모드·햄버거
+   버튼이 화면 밖으로 밀려나는 것을 막는 안전장치입니다. 실제 넘침 원인은 각
+   요소에서 개별적으로도 고쳤지만(예: 각주 줄바꿈), 이중 방어로 폭 100%를 강제함. */
+html { -webkit-text-size-adjust: 100%; overflow-x: hidden; width: 100%; }
 
 body {
   margin: 0;
+  max-width: 100%;
+  overflow-x: hidden;
   background: var(--bg);
   color: var(--text);
   font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Apple SD Gothic Neo",
@@ -553,7 +558,7 @@ table.data-table td.wrap { white-space: normal; }
 }
 .tip .tip-bubble {
   position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%) translateY(4px);
-  width: max-content; max-width: 240px;
+  width: max-content; max-width: min(240px, calc(100vw - 32px));
   background: var(--accent); color: var(--accent-contrast);
   font-size: 12px; font-weight: 500; line-height: 1.4;
   padding: 8px 10px; border-radius: 8px;
@@ -612,8 +617,8 @@ table.data-table td.wrap { white-space: normal; }
 }
 .footnotes h3 { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-3); margin: 0 0 10px; }
 .footnotes ol { margin: 0; padding-left: 18px; }
-.footnotes li { margin-bottom: 6px; }
-.footnotes a { color: var(--text-2); text-decoration: underline; text-decoration-color: var(--border-strong); }
+.footnotes li { margin-bottom: 6px; overflow-wrap: anywhere; }
+.footnotes a { color: var(--text-2); text-decoration: underline; text-decoration-color: var(--border-strong); overflow-wrap: anywhere; }
 .fn-ref { font-size: 10px; vertical-align: super; color: var(--blue); text-decoration: none; font-weight: 700; margin-left: 1px; }
 
 /* ---------------- Day nav strip ---------------- */
